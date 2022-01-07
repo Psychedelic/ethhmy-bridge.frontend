@@ -1,8 +1,8 @@
 import { TConfig, TOKEN } from '../interfaces';
 
 export const defaultEthClient: TConfig = {
-  nodeURL: 'https://kovan.infura.io/v3',
-  explorerURL: 'https://kovan.etherscan.io',
+  nodeURL: 'https://goerli.infura.io/v3',
+  explorerURL: 'https://goerli.etherscan.io',
   tokens: [
     TOKEN.ERC721,
     TOKEN.DIP721,

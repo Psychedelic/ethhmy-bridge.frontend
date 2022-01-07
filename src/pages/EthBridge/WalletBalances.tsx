@@ -81,7 +81,7 @@ export const WalletBalances = observer(() => {
     exchange.network === NETWORK_TYPE.ETHEREUM
       ? process.env.NETWORK === 'mainnet'
         ? 'mainnet'
-        : 'kovan'
+        : 'goerli'
       : process.env.NETWORK === 'mainnet'
       ? 'mainnet'
       : 'testnet';
