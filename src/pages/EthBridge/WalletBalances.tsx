@@ -189,32 +189,13 @@ export const WalletBalances = observer(() => {
                     value={formatWithSixDecimals(userMetamask.erc20Balance)}
                     selected={[
                       TOKEN.ERC20,
-                      TOKEN.HRC20,
+                      TOKEN.DIP20,
                       TOKEN.ERC721,
-                      TOKEN.HRC721,
-                      TOKEN.ONE,
+                      TOKEN.DIP721,
+                      TOKEN.ICP,
                     ].includes(exchange.token)}
                     link={`${exchange.config.explorerURL}/token/${userMetamask.erc20Address}`}
                   />
-                ) : null}
-
-                {exchange.network === NETWORK_TYPE.ETHEREUM ? (
-                  <>
-                    <AssetRow
-                      asset={`${externalNetworkName} BUSD`}
-                      value={formatWithSixDecimals(userMetamask.ethBUSDBalance)}
-                      selected={exchange.token === TOKEN.BUSD}
-                      link={`${exchange.config.explorerURL}/token/${process.env.ETH_BUSD_CONTRACT}`}
-                    />
-
-                    <AssetRow
-                      asset={`${externalNetworkName} LINK`}
-                      value={formatWithSixDecimals(userMetamask.ethLINKBalance)}
-                      selected={exchange.token === TOKEN.LINK}
-                      link={`${exchange.config.explorerURL}/token/${process.env.ETH_LINK_CONTRACT}`}
-                      last={true}
-                    />
-                  </>
                 ) : null}
               </>
             )
@@ -243,7 +224,7 @@ export const WalletBalances = observer(() => {
           >
             <Box direction="column" align="center">
               <Box direction="row" align="center">
-                <img className={styles.imgToken} src="/one.svg" />
+                <img className={styles.imgToken} src="/dfinity.svg" />
                 <Title margin={{ right: 'xsmall' }}>Harmony</Title>
               </Box>
               <Text style={{ marginTop: 0 }}>
@@ -269,7 +250,7 @@ export const WalletBalances = observer(() => {
                 {user.isAuthorized && (
                   <>
                     <img
-                      src={user.isMetamask ? '/metamask.svg' : '/one.svg'}
+                      src={user.isMetamask ? '/metamask.svg' : '/dfinity.svg'}
                       style={{
                         marginTop: user.isMetamask ? -2 : -4,
                         marginRight: 5,
@@ -278,7 +259,7 @@ export const WalletBalances = observer(() => {
                     />
                     {!isMobile ? (
                       <Text margin={{ right: '10px' }}>
-                        {user.isMetamask ? 'Metamask' : 'ONE Wallet'}
+                        {user.isMetamask ? 'Metamask' : 'Plug Wallet'}
                       </Text>
                     ) : null}
                   </>
@@ -326,11 +307,11 @@ export const WalletBalances = observer(() => {
                 <AssetRow
                   asset="Harmony ONE"
                   value={formatWithSixDecimals(ones(user.balance))}
-                  selected={[TOKEN.ONE].includes(exchange.token)}
+                  selected={[TOKEN.ICP].includes(exchange.token)}
                 />
 
                 {user.hrc20Address &&
-                [TOKEN.ERC20, TOKEN.HRC20].includes(
+                [TOKEN.ERC20, TOKEN.DIP20].includes(
                   exchange.token,
                 ) ? (
                   <AssetRow
@@ -340,7 +321,7 @@ export const WalletBalances = observer(() => {
                         : ''
                     }`}
                     value={formatWithSixDecimals(user.hrc20Balance)}
-                    selected={[TOKEN.ERC20, TOKEN.HRC20, TOKEN.ERC721, TOKEN.HRC721].includes(
+                    selected={[TOKEN.ERC20, TOKEN.DIP20, TOKEN.ERC721, TOKEN.DIP721].includes(
                       exchange.token,
                     )}
                     link={`${
@@ -369,14 +350,14 @@ export const WalletBalances = observer(() => {
                         : ''
                     }`}
                     value={formatWithSixDecimals(user.hrc20Balance)}
-                    selected={[TOKEN.ERC20, TOKEN.HRC20, TOKEN.ERC721, TOKEN.HRC721].includes(
+                    selected={[TOKEN.ERC20, TOKEN.DIP20, TOKEN.ERC721, TOKEN.DIP721].includes(
                       exchange.token,
                     )}
                     link={`${
                       process.env.HMY_EXPLORER_URL
                     }/address/${getBech32Address(
                       user.hrc20Address,
-                    )}?txType=hrc721`}
+                    )}?txType=dip721`}
                     metamask={
                       user.isMetamask &&
                       user.isAuthorized &&
@@ -388,7 +369,7 @@ export const WalletBalances = observer(() => {
                 ) : null}
 
                 {user.hrc721Address &&
-                [TOKEN.ERC721, TOKEN.HRC721].includes(
+                [TOKEN.ERC721, TOKEN.DIP721].includes(
                   exchange.token,
                 ) ? (
                   <AssetRow
@@ -398,14 +379,14 @@ export const WalletBalances = observer(() => {
                         : ''
                     }`}
                     value={Number(user.hrc20Balance)}
-                    selected={[TOKEN.ERC20, TOKEN.HRC20, TOKEN.ERC721, TOKEN.HRC721].includes(
+                    selected={[TOKEN.ERC20, TOKEN.DIP20, TOKEN.ERC721, TOKEN.DIP721].includes(
                       exchange.token,
                     )}
                     link={`${
                       process.env.HMY_EXPLORER_URL
                     }/address/${getBech32Address(
                       user.hrc721Address,
-                    )}?txType=hrc721`}
+                    )}?txType=dip721`}
                     metamask={
                       user.isMetamask &&
                       user.isAuthorized &&
@@ -417,7 +398,7 @@ export const WalletBalances = observer(() => {
                 ) : null}
 
                 {user.hrc1155Address &&
-                [TOKEN.ERC1155, TOKEN.HRC1155].includes(
+                [TOKEN.ERC1155, TOKEN.DIP1155].includes(
                   exchange.token,
                 ) ? (
                   <AssetRow
@@ -427,14 +408,14 @@ export const WalletBalances = observer(() => {
                         : ''
                     }`}
                     value={Number(user.hrc20Balance)}
-                    selected={[TOKEN.ERC20, TOKEN.HRC20, TOKEN.ERC721, TOKEN.HRC721].includes(
+                    selected={[TOKEN.ERC20, TOKEN.DIP20, TOKEN.ERC721, TOKEN.DIP721].includes(
                       exchange.token,
                     )}
                     link={`${
                       process.env.HMY_EXPLORER_URL
                     }/address/${getBech32Address(
                       user.hrc1155Address,
-                    )}?txType=hrc1155`}
+                    )}?txType=dip1155`}
                     metamask={
                       user.isMetamask &&
                       user.isAuthorized &&
@@ -466,32 +447,6 @@ export const WalletBalances = observer(() => {
                     }
                   />
                 ) : null}
-
-                {exchange.network === NETWORK_TYPE.ETHEREUM ? (
-                  <>
-                    <AssetRow
-                      asset="Harmony BUSD"
-                      value={formatWithSixDecimals(user.hmyBUSDBalance)}
-                      selected={exchange.token === TOKEN.BUSD}
-                      link={`${
-                        process.env.HMY_EXPLORER_URL
-                      }/address/${getBech32Address(
-                        process.env.HMY_BUSD_CONTRACT,
-                      )}?activeTab=3`}
-                    />
-
-                    <AssetRow
-                      asset="Harmony LINK"
-                      value={formatWithSixDecimals(user.hmyLINKBalance)}
-                      selected={exchange.token === TOKEN.LINK}
-                      link={`${
-                        process.env.HMY_EXPLORER_URL
-                      }/address/${getBech32Address(
-                        process.env.HMY_LINK_CONTRACT,
-                      )}?activeTab=3`}
-                    />
-                  </>
-                ) : null}
               </>
             )
           ) : (
@@ -513,13 +468,13 @@ export const WalletBalances = observer(() => {
                       user.signIn();
                     }
                   }}
-                  error={!user.isOneWallet && 'ONE Wallet not found'}
+                  error={!user.isOneWallet && 'Plug Wallet not found'}
                 >
                   <img
-                    src="/one.svg"
-                    style={{ marginRight: 10, marginTop: -2 }}
+                    src="/plug.svg"
+                    style={{ marginRight: 10, marginTop: -2, height: 22 }}
                   />
-                  One Wallet
+                  Plug Wallet
                 </WalletButton>
               ) : null}
 

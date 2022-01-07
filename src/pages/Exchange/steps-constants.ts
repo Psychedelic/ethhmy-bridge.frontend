@@ -5,18 +5,11 @@ export const getStepsTitle = (
   token: TOKEN,
   network: NETWORK_TYPE,
 ) => {
-  if ((token === TOKEN.ERC721 || token === TOKEN.HRC721) && action === ACTION_TYPE.getHRC20Address) {
+  if ((token === TOKEN.ERC721 || token === TOKEN.DIP721) && action === ACTION_TYPE.getHRC20Address) {
     return 'Register user ERC72 on Harmony';
   }
 
-  switch (network) {
-    case NETWORK_TYPE.ETHEREUM:
-      return STEPS_TITLE_ETHEREUM[action];
-    case NETWORK_TYPE.BINANCE:
-      return STEPS_TITLE_BINANCE[action];
-    default:
-      return STEPS_TITLE_ETHEREUM[action];
-  }
+  return STEPS_TITLE_ETHEREUM[action];
 };
 
 const STEPS_TITLE_BINANCE: Record<ACTION_TYPE, string> = {

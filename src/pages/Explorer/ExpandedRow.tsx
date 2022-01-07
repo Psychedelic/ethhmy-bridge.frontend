@@ -84,7 +84,7 @@ const getActionFee = (action: IAction): { isEth: boolean; value: number } => {
 };
 
 export const getOperationFee = (operation: IOperation) => {
-  const isEth = operation.type === EXCHANGE_MODE.ETH_TO_ONE;
+  const isEth = operation.type === EXCHANGE_MODE.ETH_TO_ICP;
 
   const actionsFee = operation.actions
     .map(getActionFee)
@@ -183,7 +183,7 @@ export const ExpandedRow = observer((props: IExpandedRowProps) => {
                   src={
                     isEth(action.type)
                       ? NETWORK_ICON[props.data.network]
-                      : '/one.svg'
+                      : '/dfinity.svg'
                   }
                   style={{
                     marginRight: 15,
@@ -236,7 +236,7 @@ export const ExpandedRow = observer((props: IExpandedRowProps) => {
                   }
                   target="_blank"
                 >
-                  {props.data.token === TOKEN.HRC20
+                  {props.data.token === TOKEN.DIP20
                     ? token.symbol.slice(1)
                     : `${NETWORK_PREFIX[props.data.network]}${sliceByLength(
                         token.symbol,

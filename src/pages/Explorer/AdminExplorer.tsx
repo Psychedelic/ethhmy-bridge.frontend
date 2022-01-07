@@ -27,16 +27,16 @@ export const isStuckOperation = (o: IOperation) => {
     let actionType: ACTION_TYPE;
 
     switch (o.token) {
-      case TOKEN.ONE:
+      case TOKEN.ICP:
         actionType =
-          o.type === EXCHANGE_MODE.ETH_TO_ONE
+          o.type === EXCHANGE_MODE.ETH_TO_ICP
             ? ACTION_TYPE.unlockHRC20Token
             : ACTION_TYPE.mintHRC20Token;
         break;
 
       default:
         actionType =
-          o.type === EXCHANGE_MODE.ETH_TO_ONE
+          o.type === EXCHANGE_MODE.ETH_TO_ICP
             ? ACTION_TYPE.mintToken
             : ACTION_TYPE.unlockToken;
         break;
@@ -232,8 +232,8 @@ export const AdminExplorer = observer((props: any) => {
                 size="full"
                 options={[
                   { text: 'ALL', value: null },
-                  { text: 'ETH -> HMY', value: EXCHANGE_MODE.ETH_TO_ONE },
-                  { text: 'HMY -> ETH', value: EXCHANGE_MODE.ONE_TO_ETH },
+                  { text: 'ETH -> HMY', value: EXCHANGE_MODE.ETH_TO_ICP },
+                  { text: 'HMY -> ETH', value: EXCHANGE_MODE.ICP_TO_ETH },
                 ]}
                 onChange={value => {
                   adminOperations.onChangeDataFlow({
@@ -270,14 +270,12 @@ export const AdminExplorer = observer((props: any) => {
                 options={[
                   { text: 'ALL', value: null },
                   { text: TOKEN.ERC20, value: TOKEN.ERC20 },
-                  { text: TOKEN.BUSD, value: TOKEN.BUSD },
-                  { text: TOKEN.LINK, value: TOKEN.LINK },
-                  { text: TOKEN.HRC20, value: TOKEN.HRC20 },
+                  { text: TOKEN.DIP20, value: TOKEN.DIP20 },
                   { text: TOKEN.ERC721, value: TOKEN.ERC721 },
-                  { text: TOKEN.HRC721, value: TOKEN.HRC721 },
+                  { text: TOKEN.DIP721, value: TOKEN.DIP721 },
                   { text: TOKEN.ERC1155, value: TOKEN.ERC1155 },
-                  { text: TOKEN.HRC1155, value: TOKEN.HRC1155 },
-                  { text: TOKEN.ONE, value: TOKEN.ONE },
+                  { text: TOKEN.DIP1155, value: TOKEN.DIP1155 },
+                  { text: TOKEN.ICP, value: TOKEN.ICP },
                   { text: TOKEN.ETH, value: TOKEN.ETH },
                 ]}
                 onChange={value => {
@@ -294,7 +292,6 @@ export const AdminExplorer = observer((props: any) => {
                 size="full"
                 options={[
                   { text: 'ALL', value: null },
-                  { text: NETWORK_TYPE.BINANCE, value: NETWORK_TYPE.BINANCE },
                   { text: NETWORK_TYPE.ETHEREUM, value: NETWORK_TYPE.ETHEREUM },
                 ]}
                 onChange={value => {

@@ -1,8 +1,8 @@
 import { ACTION_TYPE, IAction, TOKEN } from 'stores/interfaces';
 
 export const getStepsTitle = (action: IAction, token: TOKEN) => {
-  if ((token === TOKEN.ERC721 || token === TOKEN.HRC721) && action.type === ACTION_TYPE.getHRC20Address) {
-    return 'Get HRC721 token';
+  if ((token === TOKEN.ERC721 || token === TOKEN.DIP721) && action.type === ACTION_TYPE.getHRC20Address) {
+    return 'Get DIP721 token';
   }
 
   if (action.transactionHash){
@@ -12,7 +12,7 @@ export const getStepsTitle = (action: IAction, token: TOKEN) => {
       case ACTION_TYPE.getHRC1155Address:
         return "Mapping ERC1155 token"
       case ACTION_TYPE.getERC1155Address:
-        return "Mapping HRC1155 token"
+        return "Mapping DIP1155 token"
     }
   }
 

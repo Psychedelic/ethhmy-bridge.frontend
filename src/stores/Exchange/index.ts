@@ -20,7 +20,6 @@ import { mulDecimals, sleep, uuid } from '../../utils';
 import { sendHrc20Token } from './hrc20';
 import { sendErc721Token } from './erc721';
 import { getAddress } from '@harmony-js/crypto';
-import { send1ETHToken } from './1ETH';
 import { send1ONEToken } from './1ONE';
 import { getContractMethods } from './helpers';
 import { defaultEthClient } from './defaultConfig';
@@ -90,7 +89,7 @@ export class Exchange extends StoreConstructor {
   };
 
   @observable transaction = this.defaultTransaction;
-  @observable mode: EXCHANGE_MODE = EXCHANGE_MODE.ETH_TO_ONE;
+  @observable mode: EXCHANGE_MODE = EXCHANGE_MODE.ETH_TO_ICP;
   @observable token: TOKEN;
 
   constructor(stores) {
@@ -131,11 +130,11 @@ export class Exchange extends StoreConstructor {
         this.operation && this.operation.status === STATUS.IN_PROGRESS;
 
       const isUserOwnerEth =
-        this.operation.type === EXCHANGE_MODE.ETH_TO_ONE &&
+        this.operation.type === EXCHANGE_MODE.ETH_TO_ICP &&
         this.operation.ethAddress === this.stores.userMetamask.ethAddress;
 
       const isUserOwnerHmy =
-        this.operation.type === EXCHANGE_MODE.ONE_TO_ETH &&
+        this.operation.type === EXCHANGE_MODE.ICP_TO_ETH &&
         this.operation.oneAddress === this.stores.user.address;
 
       if (isOperationInProgress && (isUserOwnerEth || isUserOwnerHmy)) {
@@ -160,7 +159,7 @@ export class Exchange extends StoreConstructor {
 
   @computed
   get networkFee() {
-    return this.mode === EXCHANGE_MODE.ETH_TO_ONE
+    return this.mode === EXCHANGE_MODE.ETH_TO_ICP
       ? this.ethNetworkFee
       : this.depositAmount + 0.0134438;
   }
@@ -173,7 +172,7 @@ export class Exchange extends StoreConstructor {
           title: 'Continue',
           onClick: async () => {
             if (
-              this.mode === EXCHANGE_MODE.ETH_TO_ONE &&
+              this.mode === EXCHANGE_MODE.ETH_TO_ICP &&
               (!this.stores.userMetamask.isNetworkActual ||
                 !this.stores.userMetamask.isAuthorized)
             ) {
@@ -185,7 +184,7 @@ export class Exchange extends StoreConstructor {
             }
 
             if (
-              this.stores.exchange.mode === EXCHANGE_MODE.ONE_TO_ETH &&
+              this.stores.exchange.mode === EXCHANGE_MODE.ICP_TO_ETH &&
               ((this.stores.user.isMetamask &&
                 !this.stores.user.isNetworkActual) ||
                 !this.stores.user.isAuthorized)
@@ -205,20 +204,20 @@ export class Exchange extends StoreConstructor {
               ).checksum;
             }
 
-            if (this.token === TOKEN.HRC721 && this.stores.user.hrc721Address) {
+            if (this.token === TOKEN.DIP721 && this.stores.user.hrc721Address) {
               this.transaction.hrc721Address = getAddress(
                 this.stores.user.hrc721Address,
               ).checksum;
-            } else if (this.token === TOKEN.HRC721) {
+            } else if (this.token === TOKEN.DIP721) {
               alert('please click `Change token` button first!');
               return
             }
 
-            if (this.token === TOKEN.HRC1155 && this.stores.user.hrc1155Address) {
+            if (this.token === TOKEN.DIP1155 && this.stores.user.hrc1155Address) {
               this.transaction.hrc1155Address = getAddress(
                 this.stores.user.hrc1155Address,
               ).checksum;
-            } else if (this.token === TOKEN.HRC1155) {
+            } else if (this.token === TOKEN.DIP1155) {
               alert('please click `Change token` button first!');
               return
             }
@@ -260,10 +259,10 @@ export class Exchange extends StoreConstructor {
             }
 
             switch (this.mode) {
-              case EXCHANGE_MODE.ETH_TO_ONE:
+              case EXCHANGE_MODE.ETH_TO_ICP:
                 this.transaction.ethAddress = this.stores.userMetamask.ethAddress;
                 break;
-              case EXCHANGE_MODE.ONE_TO_ETH:
+              case EXCHANGE_MODE.ICP_TO_ETH:
                 this.transaction.oneAddress = this.stores.user.address;
                 break;
             }
@@ -271,12 +270,12 @@ export class Exchange extends StoreConstructor {
             this.transaction.approveAmount = '0';
 
             if (
-              (this.token === TOKEN.ERC721 || this.token === TOKEN.HRC721) ||
-              (this.token === TOKEN.HRC1155 || this.token === TOKEN.ERC1155)||
-              (this.token === TOKEN.ONE &&
-                this.mode === EXCHANGE_MODE.ONE_TO_ETH) ||
+              (this.token === TOKEN.ERC721 || this.token === TOKEN.DIP721) ||
+              (this.token === TOKEN.DIP1155 || this.token === TOKEN.ERC1155)||
+              (this.token === TOKEN.ICP &&
+                this.mode === EXCHANGE_MODE.ICP_TO_ETH) ||
               (this.token === TOKEN.ETH &&
-                this.mode === EXCHANGE_MODE.ETH_TO_ONE)
+                this.mode === EXCHANGE_MODE.ETH_TO_ICP)
             ) {
               this.stepNumber = this.stepNumber + 2;
             } else {
@@ -298,21 +297,21 @@ export class Exchange extends StoreConstructor {
             const exNetwork = getExNetworkMethods();
 
             switch (this.mode) {
-              case EXCHANGE_MODE.ETH_TO_ONE:
+              case EXCHANGE_MODE.ETH_TO_ICP:
                 this.isFeeLoading = true;
                 this.ethNetworkFee = await exNetwork.getNetworkFee();
                 this.isFeeLoading = false;
                 break;
-              case EXCHANGE_MODE.ONE_TO_ETH:
+              case EXCHANGE_MODE.ICP_TO_ETH:
                 this.isFeeLoading = true;
                 let otherOptions : Record<string, string> = {}
-                if (this.token === TOKEN.HRC721 && this.stores.user.hrc721Address) {
+                if (this.token === TOKEN.DIP721 && this.stores.user.hrc721Address) {
                   const hasMapper = Number(await exNetwork.ethMethodsHRC721.getMappingFor(this.stores.user.hrc721Address))
                   otherOptions = {
                     gas: hasMapper ? '0': '2500000',
                   }
                 }
-                if (this.token === TOKEN.HRC1155 && this.stores.user.hrc1155Address) {
+                if (this.token === TOKEN.DIP1155 && this.stores.user.hrc1155Address) {
                   const hasMapper = Number(await exNetwork.ethMethodsHRC1155.getMappingFor(this.stores.user.hrc1155Address))
                   otherOptions = {
                     gas: hasMapper ? '0': '3000000',
@@ -388,13 +387,13 @@ export class Exchange extends StoreConstructor {
 
   @action.bound
   setAddressByMode() {
-    if (this.mode === EXCHANGE_MODE.ETH_TO_ONE) {
+    if (this.mode === EXCHANGE_MODE.ETH_TO_ICP) {
       // this.transaction.oneAddress = this.stores.user.address;
       this.transaction.oneAddress = '';
       this.transaction.ethAddress = this.stores.userMetamask.ethAddress;
     }
 
-    if (this.mode === EXCHANGE_MODE.ONE_TO_ETH) {
+    if (this.mode === EXCHANGE_MODE.ICP_TO_ETH) {
       // this.transaction.ethAddress = this.stores.userMetamask.ethAddress;
       this.transaction.ethAddress = '';
       this.transaction.oneAddress = this.stores.user.address;
@@ -469,7 +468,7 @@ export class Exchange extends StoreConstructor {
       });
     }
 
-    if (token === TOKEN.ONE) {
+    if (token === TOKEN.ICP) {
       this.stores.user.setHRC20Mapping(process.env.ONE_HRC20, true);
     }
   }
@@ -595,19 +594,19 @@ export class Exchange extends StoreConstructor {
         await sleep(3000);
       }
 
-      if (this.mode === EXCHANGE_MODE.ETH_TO_ONE) {
+      if (this.mode === EXCHANGE_MODE.ETH_TO_ICP) {
         if (this.operation.ethAddress !== this.stores.userMetamask.ethAddress) {
           return;
         }
       }
 
-      if (this.mode === EXCHANGE_MODE.ONE_TO_ETH) {
+      if (this.mode === EXCHANGE_MODE.ICP_TO_ETH) {
         if (this.operation.oneAddress !== this.stores.user.address) {
           return;
         }
       }
 
-      if (this.mode === EXCHANGE_MODE.ONE_TO_ETH) {
+      if (this.mode === EXCHANGE_MODE.ICP_TO_ETH) {
         const hmyMethods = this.stores.user.isMetamask
           ? contract.hmyMethodsDeposit.hmyMethodsWeb3
           : contract.hmyMethodsDeposit.hmyMethods;
@@ -637,20 +636,6 @@ export class Exchange extends StoreConstructor {
       const exNetwork = getExNetworkMethods();
 
       switch (this.token) {
-        case TOKEN.BUSD:
-          ethMethods = exNetwork.ethMethodsBUSD;
-          hmyMethods = this.stores.user.isMetamask
-            ? contract.hmyMethodsBUSD.hmyMethodsWeb3
-            : contract.hmyMethodsBUSD.hmyMethods;
-          break;
-
-        case TOKEN.LINK:
-          ethMethods = exNetwork.ethMethodsLINK;
-          hmyMethods = this.stores.user.isMetamask
-            ? contract.hmyMethodsLINK.hmyMethodsWeb3
-            : contract.hmyMethodsLINK.hmyMethods;
-          break;
-
         case TOKEN.ERC20:
           ethMethods = exNetwork.ethMethodsERC20;
 
@@ -665,18 +650,8 @@ export class Exchange extends StoreConstructor {
           }
           break;
 
-        case TOKEN.ONE:
+        case TOKEN.ICP:
           await send1ONEToken({
-            transaction: this.transaction,
-            mode: this.mode,
-            stores: this.stores,
-            getActionByType: this.getActionByType,
-            confirmCallback: confirmCallback,
-          });
-          return;
-
-        case TOKEN.ETH:
-          await send1ETHToken({
             transaction: this.transaction,
             mode: this.mode,
             stores: this.stores,
@@ -695,7 +670,7 @@ export class Exchange extends StoreConstructor {
           });
           return;
 
-        case TOKEN.HRC721:
+        case TOKEN.DIP721:
           await sendHrc721Token({
             transaction: this.transaction,
             mode: this.mode,
@@ -705,7 +680,7 @@ export class Exchange extends StoreConstructor {
           });
           return;
 
-        case TOKEN.HRC1155:
+        case TOKEN.DIP1155:
           await sendHrc1155Token({
             transaction: this.transaction,
             mode: this.mode,
@@ -725,7 +700,7 @@ export class Exchange extends StoreConstructor {
           });
           return;
 
-        case TOKEN.HRC20:
+        case TOKEN.DIP20:
           await sendHrc20Token({
             transaction: this.transaction,
             mode: this.mode,
@@ -753,7 +728,7 @@ export class Exchange extends StoreConstructor {
           );
         }
 
-        if (this.mode === EXCHANGE_MODE.ETH_TO_ONE) {
+        if (this.mode === EXCHANGE_MODE.ETH_TO_ICP) {
           let approveEthManger = this.getActionByType(
             ACTION_TYPE.approveEthManger,
           );
@@ -800,7 +775,7 @@ export class Exchange extends StoreConstructor {
           return;
         }
 
-        if (this.mode === EXCHANGE_MODE.ONE_TO_ETH) {
+        if (this.mode === EXCHANGE_MODE.ICP_TO_ETH) {
           const hrc20Address = this.stores.user.hrc20Address;
 
           let approveHmyManger = this.getActionByType(
@@ -847,7 +822,7 @@ export class Exchange extends StoreConstructor {
           return;
         }
       } else {
-        if (this.mode === EXCHANGE_MODE.ETH_TO_ONE) {
+        if (this.mode === EXCHANGE_MODE.ETH_TO_ICP) {
           let approveEthManger = this.getActionByType(
             ACTION_TYPE.approveEthManger,
           );
@@ -887,7 +862,7 @@ export class Exchange extends StoreConstructor {
           return;
         }
 
-        if (this.mode === EXCHANGE_MODE.ONE_TO_ETH) {
+        if (this.mode === EXCHANGE_MODE.ICP_TO_ETH) {
           let approveHmyManger = this.getActionByType(
             ACTION_TYPE.approveHmyManger,
           );
@@ -979,7 +954,7 @@ export class Exchange extends StoreConstructor {
     );
 
     try {
-      if (this.mode === EXCHANGE_MODE.ONE_TO_ETH) {
+      if (this.mode === EXCHANGE_MODE.ICP_TO_ETH) {
         console.log(this.transaction.oneAddress, this.transaction.hrc20Address);
 
         this.allowance = await hmyMethods.allowance(
@@ -988,7 +963,7 @@ export class Exchange extends StoreConstructor {
         );
       }
 
-      if (this.mode === EXCHANGE_MODE.ETH_TO_ONE) {
+      if (this.mode === EXCHANGE_MODE.ETH_TO_ICP) {
         console.log(this.transaction.ethAddress, this.transaction.erc20Address);
 
         this.allowance = await ethMethods.allowance(
@@ -1032,10 +1007,6 @@ export class Exchange extends StoreConstructor {
       return this.fullConfig.ethClient;
     }
 
-    if (this.network === NETWORK_TYPE.BINANCE) {
-      return this.fullConfig.binanceClient;
-    }
-
     return this.fullConfig.ethClient;
   }
 
@@ -1044,11 +1015,6 @@ export class Exchange extends StoreConstructor {
       return defaultEthClient.explorerURL;
     }
 
-    switch (network) {
-      case NETWORK_TYPE.BINANCE:
-        return this.fullConfig.binanceClient.explorerURL;
-      case NETWORK_TYPE.ETHEREUM:
-        return this.fullConfig.ethClient.explorerURL;
-    }
+    return this.fullConfig.ethClient.explorerURL;
   }
 }

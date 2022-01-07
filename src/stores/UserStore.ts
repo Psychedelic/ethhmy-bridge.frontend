@@ -407,7 +407,7 @@ export class UserStoreEx extends StoreConstructor {
 
     if (!ignoreValidations) {
       if (
-        this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ONE &&
+        this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ICP &&
         (!this.stores.userMetamask.isNetworkActual ||
           !this.stores.userMetamask.isAuthorized)
       ) {
@@ -419,7 +419,7 @@ export class UserStoreEx extends StoreConstructor {
       }
 
       if (
-        this.stores.exchange.mode === EXCHANGE_MODE.ONE_TO_ETH &&
+        this.stores.exchange.mode === EXCHANGE_MODE.ICP_TO_ETH &&
         ((this.stores.user.isMetamask && !this.stores.user.isNetworkActual) ||
           !this.stores.user.isAuthorized)
       ) {
@@ -472,7 +472,7 @@ export class UserStoreEx extends StoreConstructor {
     }
 
     try {
-      if (this.stores.exchange.token === TOKEN.ONE) {
+      if (this.stores.exchange.token === TOKEN.ICP) {
         this.stores.userMetamask.erc20TokenDetails = {
           name: 'Ethereum One',
           symbol: 'ONE',
@@ -499,7 +499,7 @@ export class UserStoreEx extends StoreConstructor {
       try {
         address = await exNetwork.ethMethodsHRC20.getMappingFor(
           hrc20Address,
-          this.stores.exchange.token === TOKEN.ONE,
+          this.stores.exchange.token === TOKEN.ICP,
         );
       } catch (e) {
         console.error(e);
@@ -530,7 +530,7 @@ export class UserStoreEx extends StoreConstructor {
 
     if (!ignoreValidations) {
       if (
-        this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ONE &&
+        this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ICP &&
         (!this.stores.userMetamask.isNetworkActual ||
           !this.stores.userMetamask.isAuthorized)
       ) {
@@ -542,7 +542,7 @@ export class UserStoreEx extends StoreConstructor {
       }
 
       if (
-        this.stores.exchange.mode === EXCHANGE_MODE.ONE_TO_ETH &&
+        this.stores.exchange.mode === EXCHANGE_MODE.ICP_TO_ETH &&
         ((this.stores.user.isMetamask && !this.stores.user.isNetworkActual) ||
           !this.stores.user.isAuthorized)
       ) {
@@ -592,7 +592,7 @@ export class UserStoreEx extends StoreConstructor {
     }
 
     try {
-      if (this.stores.exchange.token === TOKEN.ONE) {
+      if (this.stores.exchange.token === TOKEN.ICP) {
         this.stores.userMetamask.erc20TokenDetails = {
           name: 'Ethereum One',
           symbol: 'ONE',
@@ -619,7 +619,7 @@ export class UserStoreEx extends StoreConstructor {
       try {
         address = await exNetwork.ethMethodsHRC721.getMappingFor(
           hrc721Address,
-          this.stores.exchange.token === TOKEN.ONE,
+          this.stores.exchange.token === TOKEN.ICP,
         );
       } catch (e) {
         console.error(e);
@@ -659,7 +659,7 @@ export class UserStoreEx extends StoreConstructor {
 
     if (!ignoreValidations) {
       if (
-        this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ONE &&
+        this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ICP &&
         (!this.stores.userMetamask.isNetworkActual ||
           !this.stores.userMetamask.isAuthorized)
       ) {
@@ -671,7 +671,7 @@ export class UserStoreEx extends StoreConstructor {
       }
 
       if (
-        this.stores.exchange.mode === EXCHANGE_MODE.ONE_TO_ETH &&
+        this.stores.exchange.mode === EXCHANGE_MODE.ICP_TO_ETH &&
         ((this.stores.user.isMetamask && !this.stores.user.isNetworkActual) ||
           !this.stores.user.isAuthorized)
       ) {
@@ -713,7 +713,7 @@ export class UserStoreEx extends StoreConstructor {
     }
 
     try {
-      if (this.stores.exchange.token === TOKEN.ONE) {
+      if (this.stores.exchange.token === TOKEN.ICP) {
         this.stores.userMetamask.erc20TokenDetails = {
           name: 'Ethereum One',
           symbol: 'ONE',
@@ -742,7 +742,7 @@ export class UserStoreEx extends StoreConstructor {
       try {
         address = await exNetwork.ethMethodsHRC1155.getMappingFor(
           hrc1155Address,
-          this.stores.exchange.token === TOKEN.ONE,
+          this.stores.exchange.token === TOKEN.ICP,
         );
 
         this.stores.userMetamask.erc20Balance = Number(await exNetwork.ethMethodsHRC1155.balanceOf(address, tokenId)).toString()

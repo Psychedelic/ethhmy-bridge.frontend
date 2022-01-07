@@ -6,7 +6,6 @@ import { Redirect, Route, Switch } from 'react-router';
 import { ActionModals } from './components/ActionModals';
 import { EthBridge } from './pages/EthBridge';
 import { Explorer } from './pages/Explorer';
-import { MintTokens } from './pages/MintTokens';
 import { Tokens } from './pages/Tokens';
 import { InfoModal } from './components/InfoModal';
 import { FAQPage } from './pages/FAQ';
@@ -20,9 +19,6 @@ export const App: React.FC = () => (
   <Providers>
     <React.Suspense fallback={<div />}>
       <Switch>
-        {process.env.GET_TOKENS_SERVICE === 'true' ? (
-          <Route exact path="/get-tokens" component={MintTokens} />
-        ) : null}
         <Route exact path="/tokens" component={Tokens} />
         <Route exact path="/tx-example" component={TransactionExample} />
         <Route exact path="/hrc20-example" component={Hrc20ContractExample} />

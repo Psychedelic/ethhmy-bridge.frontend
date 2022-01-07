@@ -15,7 +15,7 @@ export const OperationType = (props: { type: EXCHANGE_MODE }) => {
   return (
     <Box
       direction={
-        props.type === EXCHANGE_MODE.ETH_TO_ONE ? 'row' : 'row-reverse'
+        props.type === EXCHANGE_MODE.ETH_TO_ICP ? 'row' : 'row-reverse'
       }
       align="center"
       className={cn(styles.operationType)}
@@ -36,9 +36,9 @@ export const OperationType = (props: { type: EXCHANGE_MODE }) => {
         <img
           className={styles.imgToken}
           style={{ height: 18 }}
-          src="/one.svg"
+          src="/dfinity.svg"
         />
-        <Text size="medium">ONE</Text>
+        <Text size="medium">ICP</Text>
       </Box>
     </Box>
   );
@@ -57,7 +57,7 @@ export const Price = observer(
         {...props.boxProps}
       >
         <Text style={{ fontSize: 14 }}>{`${props.value} ${
-          props.isEth ? 'ETH' : 'ONE'
+          props.isEth ? 'ETH' : 'ICP'
         }`}</Text>
         <Text size="xsmall" color="rgba(102, 102, 102, 0.9)">
           $

@@ -267,7 +267,7 @@ export const getTokensInfo = async (
     }
 
     if (
-      t.symbol === 'ONE' &&
+      t.symbol === 'ICP Address' &&
       hasAddress(t) &&
       String(t.hrc20Address).toLowerCase() !==
         String(process.env.ONE_HRC20).toLowerCase()
@@ -287,7 +287,7 @@ export const getTokensInfo = async (
       !blackList.includes(t.hrc20Address.toLowerCase()) &&
       !blackList.includes(t.erc20Address.toLowerCase()),
   );
-  content = content.filter(t => t.type !== 'hrc20' || !hasAddress(t));
+  content = content.filter(t => t.type !== 'dip20' || !hasAddress(t));
 
   content = _.uniqWith(
     content,

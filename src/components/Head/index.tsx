@@ -40,12 +40,12 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
     const goToBridge = () => {
       if (exchange.operation && exchange.operation.id) {
         routing.push(
-          `/${exchange.token || TOKEN.BUSD}/operations/${
+          `/${exchange.token}/operations/${
             exchange.operation.id
           }`,
         );
       } else {
-        routing.push(`/${exchange.token || TOKEN.BUSD}`);
+        routing.push(`/${exchange.token}`);
       }
     };
 
@@ -86,11 +86,11 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
               margin={{ right: 'small' }}
               onClick={goToBridge}
             >
-              <MainLogo src="/one.svg" />
+              <MainLogo src="/dfinity.svg" />
             </Box>
             <Box>
               <Title size={isMobile ? 'small' : 'medium'} color="BlackTxt" bold>
-                Horizon by Harmony
+                Terabethia
               </Title>
             </Box>
           </Box>

@@ -54,9 +54,9 @@ const LargeButton = observer(
             <img src="/right.svg" />
           </Box>
           <Box direction="row" align="center">
-            <img className={styles.imgToken} src="/one.svg" />
+            <img className={styles.imgToken} src="/dfinity.svg" />
             <Text size="large" className={styles.title}>
-              ONE
+              ICP
             </Text>
           </Box>
         </Box>
@@ -107,16 +107,14 @@ export const EthBridge = observer((props: any) => {
     if (props.match.params.token) {
       if (
         [
-          TOKEN.LINK,
-          TOKEN.BUSD,
           TOKEN.ERC20,
           TOKEN.ETH,
           TOKEN.ERC721,
-          TOKEN.HRC721,
+          TOKEN.DIP721,
           TOKEN.ERC1155,
-          TOKEN.HRC1155,
-          TOKEN.HRC20,
-          TOKEN.ONE,
+          TOKEN.DIP1155,
+          TOKEN.DIP20,
+          TOKEN.ICP,
         ].includes(props.match.params.token)
       ) {
         exchange.setToken(props.match.params.token);
@@ -131,7 +129,7 @@ export const EthBridge = observer((props: any) => {
           });
         }
       } else {
-        routing.push(TOKEN.BUSD);
+        routing.push(TOKEN.ETH);
       }
     }
 
@@ -153,7 +151,6 @@ export const EthBridge = observer((props: any) => {
           <Box direction="column">
             <Box direction="column" margin={{ top: 'large' }}>
               <Box direction="row" justify="start" gap="20px">
-                <NetworkButton type={NETWORK_TYPE.BINANCE} />
                 <NetworkButton type={NETWORK_TYPE.ETHEREUM} />
               </Box>
 
@@ -173,19 +170,19 @@ export const EthBridge = observer((props: any) => {
                   wrap={true}
                 >
                   <LargeButton
-                    title="ETH -> ONE"
+                    title="ETH -> ICP"
                     description="(Metamask)"
-                    onClick={() => exchange.setMode(EXCHANGE_MODE.ETH_TO_ONE)}
-                    isActive={exchange.mode === EXCHANGE_MODE.ETH_TO_ONE}
+                    onClick={() => exchange.setMode(EXCHANGE_MODE.ETH_TO_ICP)}
+                    isActive={exchange.mode === EXCHANGE_MODE.ETH_TO_ICP}
                   />
                   <LargeButton
-                    title="ONE -> ETH"
+                    title="ICP -> ETH"
                     reverse={true}
                     description={
-                      user.isMetamask ? '(Metamask)' : '(ONE Wallet)'
+                      user.isMetamask ? '(Metamask)' : '(Plug Wallet)'
                     }
-                    onClick={() => exchange.setMode(EXCHANGE_MODE.ONE_TO_ETH)}
-                    isActive={exchange.mode === EXCHANGE_MODE.ONE_TO_ETH}
+                    onClick={() => exchange.setMode(EXCHANGE_MODE.ICP_TO_ETH)}
+                    isActive={exchange.mode === EXCHANGE_MODE.ICP_TO_ETH}
                   />
                 </Box>
                 <Exchange />
@@ -230,17 +227,17 @@ export const EthBridge = observer((props: any) => {
               margin={{ vertical: 'large' }}
             >
               <LargeButton
-                title="ETH -> ONE"
+                title="ETH -> ICP"
                 description="(Metamask)"
-                onClick={() => exchange.setMode(EXCHANGE_MODE.ETH_TO_ONE)}
-                isActive={exchange.mode === EXCHANGE_MODE.ETH_TO_ONE}
+                onClick={() => exchange.setMode(EXCHANGE_MODE.ETH_TO_ICP)}
+                isActive={exchange.mode === EXCHANGE_MODE.ETH_TO_ICP}
               />
               <LargeButton
-                title="ONE -> ETH"
+                title="ICP -> ETH"
                 reverse={true}
-                description={user.isMetamask ? '(Metamask)' : '(ONE Wallet)'}
-                onClick={() => exchange.setMode(EXCHANGE_MODE.ONE_TO_ETH)}
-                isActive={exchange.mode === EXCHANGE_MODE.ONE_TO_ETH}
+                description={user.isMetamask ? '(Metamask)' : '(Plug Wallet)'}
+                onClick={() => exchange.setMode(EXCHANGE_MODE.ICP_TO_ETH)}
+                isActive={exchange.mode === EXCHANGE_MODE.ICP_TO_ETH}
               />
             </Box>
 
@@ -263,7 +260,6 @@ export const EthBridge = observer((props: any) => {
 
           <Box direction="column" margin={{ top: 'large' }}>
             <Box direction="row" justify="start" gap="20px">
-              <NetworkButton type={NETWORK_TYPE.BINANCE} />
               <NetworkButton type={NETWORK_TYPE.ETHEREUM} />
             </Box>
             <WalletBalances />

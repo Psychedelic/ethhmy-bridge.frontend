@@ -51,7 +51,7 @@ export const send1ONEToken = async (params: {
     await stores.user.setHRC20Mapping(process.env.ONE_HRC20, true);
   }
 
-  if (mode === EXCHANGE_MODE.ONE_TO_ETH) {
+  if (mode === EXCHANGE_MODE.ICP_TO_ETH) {
     const lockToken = getActionByType(ACTION_TYPE.lockHRC20Token);
 
     if (lockToken.status === STATUS.WAITING) {
@@ -65,7 +65,7 @@ export const send1ONEToken = async (params: {
     return;
   }
 
-  if (mode === EXCHANGE_MODE.ETH_TO_ONE) {
+  if (mode === EXCHANGE_MODE.ETH_TO_ICP) {
     const erc20Address = stores.userMetamask.erc20Address;
 
     let approveHmyManger = getActionByType(ACTION_TYPE.approveHRC20EthManger);

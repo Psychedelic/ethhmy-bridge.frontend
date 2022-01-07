@@ -39,7 +39,7 @@ export const sendErc721Token = async (params: {
     await stores.userMetamask.setERC721Token(transaction.erc20Address);
   }
 
-  if (mode === EXCHANGE_MODE.ETH_TO_ONE) {
+  if (mode === EXCHANGE_MODE.ETH_TO_ICP) {
     let approveEthManger = getActionByType(ACTION_TYPE.approveEthManger);
 
     if (approveEthManger && approveEthManger.status === STATUS.WAITING) {
@@ -76,7 +76,7 @@ export const sendErc721Token = async (params: {
     return;
   }
 
-  if (mode === EXCHANGE_MODE.ONE_TO_ETH) {
+  if (mode === EXCHANGE_MODE.ICP_TO_ETH) {
     const hrc20Address = stores.user.hrc20Address;
 
     let approveHmyManger = getActionByType(ACTION_TYPE.approveHmyManger);

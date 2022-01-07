@@ -6,16 +6,14 @@ import * as styles from './styles.styl';
 import { TOKEN } from 'stores/interfaces';
 
 const icons: Record<TOKEN, string> = {
-  [TOKEN.BUSD]: '/busd.svg',
-  [TOKEN.LINK]: '/link.png',
   [TOKEN.ERC20]: '/eth.svg',
   [TOKEN.ETH]: '/eth.svg',
   [TOKEN.ERC721]: '/eth.svg',
-  [TOKEN.HRC721]: '/one.svg',
+  [TOKEN.DIP721]: '/dfinity.svg',
   [TOKEN.ERC1155]: '/eth.svg',
-  [TOKEN.HRC1155]: '/one.svg',
-  [TOKEN.HRC20]: '/one.svg',
-  [TOKEN.ONE]: '/one.svg',
+  [TOKEN.DIP1155]: '/dfinity.svg',
+  [TOKEN.DIP20]: '/dfinity.svg',
+  [TOKEN.ICP]: '/dfinity.svg',
 };
 
 export const ItemToken = ({ selected, onClick, tokenType }) => {

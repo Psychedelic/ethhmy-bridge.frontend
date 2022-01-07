@@ -63,13 +63,13 @@ export class Exchange extends React.Component<
           this.addressValidationError = '';
         }
 
-        if (exchange.token === TOKEN.ERC721 || exchange.token === TOKEN.HRC721) {
+        if (exchange.token === TOKEN.ERC721 || exchange.token === TOKEN.DIP721) {
           exchange.transaction.amount = ['0'];
         } else {
           exchange.transaction.amount = '0';
         }
 
-        if (exchange.token === TOKEN.ERC1155 || exchange.token === TOKEN.HRC1155) {
+        if (exchange.token === TOKEN.ERC1155 || exchange.token === TOKEN.DIP1155) {
           exchange.transaction.hrc1155TokenId = '0';
         }
       }
@@ -108,7 +108,7 @@ export class Exchange extends React.Component<
     }
 
     // if (
-    //   exchange.mode === EXCHANGE_MODE.ONE_TO_ETH &&
+    //   exchange.mode === EXCHANGE_MODE.ICP_TO_ETH &&
     //   exchange.network === NETWORK_TYPE.BINANCE
     // ) {
     //   return actionModals.open(
@@ -143,7 +143,7 @@ export class Exchange extends React.Component<
     // }
 
     if (!user.isAuthorized) {
-      if (exchange.mode === EXCHANGE_MODE.ONE_TO_ETH) {
+      if (exchange.mode === EXCHANGE_MODE.ICP_TO_ETH) {
         if (!user.isOneWallet) {
           return actionModals.open(() => <AuthWarning />, {
             title: '',
@@ -164,7 +164,7 @@ export class Exchange extends React.Component<
 
     if (
       !userMetamask.isAuthorized &&
-      exchange.mode === EXCHANGE_MODE.ETH_TO_ONE
+      exchange.mode === EXCHANGE_MODE.ETH_TO_ICP
     ) {
       if (!userMetamask.isAuthorized) {
         await userMetamask.signIn(true);
@@ -172,7 +172,7 @@ export class Exchange extends React.Component<
     }
 
     if (
-      exchange.mode === EXCHANGE_MODE.ONE_TO_ETH &&
+      exchange.mode === EXCHANGE_MODE.ICP_TO_ETH &&
       user.isMetamask &&
       !user.isNetworkActual
     ) {
@@ -195,7 +195,7 @@ export class Exchange extends React.Component<
     }
 
     if (needValidate) {
-      if (exchange.mode === EXCHANGE_MODE.ONE_TO_ETH) {
+      if (exchange.mode === EXCHANGE_MODE.ICP_TO_ETH) {
         const methods = getExNetworkMethods();
 
         if (!methods.web3.utils.isAddress(exchange.transaction.ethAddress)) {
@@ -225,7 +225,7 @@ export class Exchange extends React.Component<
       this.formRef.validateFields().then(async () => {
         try {
           if (this.props.exchange.step.id === EXCHANGE_STEPS.BASE) {
-            await new Promise((res, rej) => {
+            await new Promise<void>((res, rej) => {
               actionModals.open(
                 () => (
                   <Box pad="large">
@@ -287,33 +287,16 @@ export class Exchange extends React.Component<
     const { user, exchange, userMetamask } = this.props;
 
     switch (exchange.token) {
-      case TOKEN.BUSD:
-        return {
-          label: 'BUSD',
-          maxAmount:
-            exchange.mode === EXCHANGE_MODE.ONE_TO_ETH
-              ? user.hmyBUSDBalance
-              : userMetamask.ethBUSDBalance,
-        };
-      case TOKEN.LINK:
-        return {
-          label: 'LINK',
-          maxAmount:
-            exchange.mode === EXCHANGE_MODE.ONE_TO_ETH
-              ? user.hmyLINKBalance
-              : userMetamask.ethLINKBalance,
-        };
-
-      case TOKEN.HRC721:
+      case TOKEN.DIP721:
       case TOKEN.ERC1155:
-      case TOKEN.HRC1155:
+      case TOKEN.DIP1155:
       case TOKEN.ERC721:
       case TOKEN.ERC20:
-      case TOKEN.HRC20:
+      case TOKEN.DIP20:
         return {
           label: userMetamask.erc20TokenDetails ? userMetamask.erc20TokenDetails.symbol : '',
           maxAmount:
-            exchange.mode === EXCHANGE_MODE.ONE_TO_ETH
+            exchange.mode === EXCHANGE_MODE.ICP_TO_ETH
               ? user.hrc20Balance
               : userMetamask.erc20Balance,
         };
@@ -322,16 +305,16 @@ export class Exchange extends React.Component<
         return {
           label: NETWORK_BASE_TOKEN[this.props.exchange.network],
           maxAmount:
-            exchange.mode === EXCHANGE_MODE.ONE_TO_ETH
+            exchange.mode === EXCHANGE_MODE.ICP_TO_ETH
               ? user.hrc20Balance
               : userMetamask.ethBalance,
         };
 
-      case TOKEN.ONE:
+      case TOKEN.ICP:
         return {
-          label: 'ONE',
+          label: 'ICP',
           maxAmount:
-            exchange.mode === EXCHANGE_MODE.ONE_TO_ETH
+            exchange.mode === EXCHANGE_MODE.ICP_TO_ETH
               ? divDecimals(user.balance, 18)
               : userMetamask.erc20Balance,
         };
@@ -340,7 +323,7 @@ export class Exchange extends React.Component<
         return {
           label: 'BUSD',
           maxAmount:
-            exchange.mode === EXCHANGE_MODE.ONE_TO_ETH
+            exchange.mode === EXCHANGE_MODE.ICP_TO_ETH
               ? user.hmyBUSDBalance
               : userMetamask.ethBUSDBalance,
         };
@@ -382,16 +365,14 @@ export class Exchange extends React.Component<
             <Box margin={{ vertical: 'small' }}>
               <Text>Success</Text>
             </Box>
-            {exchange.operation.type === EXCHANGE_MODE.ETH_TO_ONE &&
+            {exchange.operation.type === EXCHANGE_MODE.ETH_TO_ICP &&
             [
               TOKEN.ERC20,
               TOKEN.ETH,
-              TOKEN.BUSD,
-              TOKEN.LINK,
               TOKEN.ERC721,
-              TOKEN.HRC721,
+              TOKEN.DIP721,
               TOKEN.ERC1155,
-              TOKEN.HRC1155,
+              TOKEN.DIP1155,
             ].includes(exchange.token) ? (
               <Box
                 pad={{ horizontal: 'medium', vertical: 'small' }}
@@ -452,39 +433,6 @@ export class Exchange extends React.Component<
       <Box direction="column" className={styles.exchangeContainer}>
         {exchange.step.id === EXCHANGE_STEPS.BASE && exchange.fullConfig ? (
           <Box direction="row" wrap={true} align="center" justify="start">
-            {exchange.config.tokens.includes(TOKEN.BUSD) && (
-              <Box
-                style={{ width: 140 }}
-                className={cn(
-                  styles.itemToken,
-                  exchange.token === TOKEN.BUSD ? styles.selected : '',
-                )}
-                onClick={() => {
-                  exchange.setToken(TOKEN.BUSD);
-                  routing.push(`/${exchange.token}`);
-                }}
-              >
-                <img className={styles.imgToken} src="/busd.svg" />
-                <Text>BUSD</Text>
-              </Box>
-            )}
-
-            {exchange.config.tokens.includes(TOKEN.LINK) && (
-              <Box
-                className={cn(
-                  styles.itemToken,
-                  exchange.token === TOKEN.LINK ? styles.selected : '',
-                )}
-                onClick={() => {
-                  exchange.setToken(TOKEN.LINK);
-                  routing.push(`/${exchange.token}`);
-                }}
-              >
-                <img className={styles.imgToken} src="/link.png" />
-                <Text>LINK</Text>
-              </Box>
-            )}
-
             {exchange.config.tokens.includes(TOKEN.ERC20) && (
               <Box
                 className={cn(
@@ -510,28 +458,9 @@ export class Exchange extends React.Component<
               </Box>
             )}
 
-            {exchange.network === NETWORK_TYPE.BINANCE &&
-              exchange.config.tokens.includes(TOKEN.HRC20) && (
-                <Box
-                  className={cn(
-                    styles.itemToken,
-                    exchange.token === TOKEN.HRC20 ? styles.selected : '',
-                  )}
-                  onClick={() => {
-                    user.resetTokens();
-
-                    exchange.setToken(TOKEN.HRC20);
-                    routing.push(`/${exchange.token}`);
-                  }}
-                >
-                  <img className={styles.imgToken} src="/one.svg" />
-                  <Text>HRC20</Text>
-                </Box>
-              )}
-
             {exchange.config.tokens.includes(TOKEN.ERC721) && (
               <Box
-                style={{ width: 140 }}
+                style={{ width: 140, opacity: 0.25, pointerEvents: "none" }}
                 className={cn(
                   styles.itemToken,
                   exchange.token === TOKEN.ERC721 ? styles.selected : '',
@@ -548,28 +477,28 @@ export class Exchange extends React.Component<
               </Box>
             )}
 
-            {exchange.config.tokens.includes(TOKEN.HRC721) && (
+            {exchange.config.tokens.includes(TOKEN.DIP721) && (
               <Box
-                style={{ width: 140 }}
+                style={{ width: 140, opacity: 0.25, pointerEvents: "none" }}
                 className={cn(
                   styles.itemToken,
-                  exchange.token === TOKEN.HRC721 ? styles.selected : '',
+                  exchange.token === TOKEN.DIP721 ? styles.selected : '',
                 )}
                 onClick={() => {
                   user.resetTokens();
 
-                  exchange.setToken(TOKEN.HRC721);
+                  exchange.setToken(TOKEN.DIP721);
                   routing.push(`/${exchange.token}`);
                 }}
               >
-                <img className={styles.imgToken} src="/one.svg" />
-                <Text>HRC721</Text>
+                <img className={styles.imgToken} src="/dfinity.svg" />
+                <Text>DIP721</Text>
               </Box>
             )}
 
             {exchange.config.tokens.includes(TOKEN.ERC1155) && (
               <Box
-                style={{ width: 140 }}
+                style={{ width: 140, opacity: 0.25, pointerEvents: "none" }}
                 className={cn(
                   styles.itemToken,
                   exchange.token === TOKEN.ERC1155 ? styles.selected : '',
@@ -586,22 +515,22 @@ export class Exchange extends React.Component<
               </Box>
             )}
 
-            {exchange.config.tokens.includes(TOKEN.HRC1155) && (
+            {exchange.config.tokens.includes(TOKEN.DIP1155) && (
               <Box
-                style={{ width: 140 }}
+                style={{ width: 140, opacity: 0.25, pointerEvents: "none" }}
                 className={cn(
                         styles.itemToken,
-                        exchange.token === TOKEN.HRC1155 ? styles.selected : '',
+                        exchange.token === TOKEN.DIP1155 ? styles.selected : '',
                 )}
                 onClick={() => {
                     user.resetTokens();
 
-                    exchange.setToken(TOKEN.HRC1155);
+                    exchange.setToken(TOKEN.DIP1155);
                     routing.push(`/${exchange.token}`);
                 }}
               >
-                <img className={styles.imgToken} src="/one.svg" />
-                <Text>HRC1155</Text>
+                <img className={styles.imgToken} src="/dfinity.svg" />
+                <Text>DIP1155</Text>
               </Box>
              )}
 
@@ -624,14 +553,14 @@ export class Exchange extends React.Component<
               </Box>
             )}
 
-            {exchange.config.tokens.includes(TOKEN.ONE) && (
+            {exchange.config.tokens.includes(TOKEN.ICP) && (
               <Box
                 className={cn(
                   styles.itemToken,
-                  exchange.token === TOKEN.ONE ? styles.selected : '',
+                  exchange.token === TOKEN.ICP ? styles.selected : '',
                 )}
                 onClick={() => {
-                  exchange.setToken(TOKEN.ONE);
+                  exchange.setToken(TOKEN.ICP);
                   routing.push(`/${exchange.token}`);
 
                   // user.setHRC20Mapping(process.env.ONE_HRC20, true);
@@ -645,8 +574,8 @@ export class Exchange extends React.Component<
                   // });
                 }}
               >
-                <img className={styles.imgToken} src="/one.svg" />
-                <Text>ONE</Text>
+                <img className={styles.imgToken} src="/dfinity.svg" />
+                <Text>ICP</Text>
               </Box>
             )}
           </Box>
@@ -681,7 +610,7 @@ export class Exchange extends React.Component<
                 <ERC20Select type={exchange.token} options={true} />
               ) : null}
 
-              {exchange.token === TOKEN.HRC20 ? (
+              {exchange.token === TOKEN.DIP20 ? (
                 <ERC20Select type={exchange.token} options={true} />
               ) : null}
 
@@ -689,11 +618,11 @@ export class Exchange extends React.Component<
                 <ERC20Select type={exchange.token} options={false} />
               ) : null}
 
-              {exchange.token === TOKEN.HRC721 ? (
+              {exchange.token === TOKEN.DIP721 ? (
                 <ERC20Select type={exchange.token} options={false} />
               ) : null}
 
-              {exchange.token === TOKEN.HRC1155 ? (
+              {exchange.token === TOKEN.DIP1155 ? (
                 <ERC20Select type={exchange.token} options={false} />
               ) : null}
 
@@ -717,12 +646,12 @@ export class Exchange extends React.Component<
                 fill={true}
                 margin={{ top: 'xlarge', bottom: 'large' }}
               >
-                {(exchange.token === TOKEN.ERC721 || exchange.token === TOKEN.HRC721) ? (
+                {(exchange.token === TOKEN.ERC721 || exchange.token === TOKEN.DIP721) ? (
                   <TokensField
                     label={this.tokenInfo.label}
                     maxTokens={this.tokenInfo.maxAmount}
                   />
-                ) : (exchange.token === TOKEN.ERC1155 || exchange.token === TOKEN.HRC1155) ? (
+                ) : (exchange.token === TOKEN.ERC1155 || exchange.token === TOKEN.DIP1155) ? (
                   <NumberInput
                     label={`${this.tokenInfo.label} Amount`}
                     name="amount"
@@ -777,14 +706,14 @@ export class Exchange extends React.Component<
                     ]}
                   />
                 )}
-                {exchange.token !== TOKEN.ERC721 && exchange.token !== TOKEN.HRC721 && exchange.token !== TOKEN.ERC1155 && exchange.token !== TOKEN.HRC1155 ? (
+                {exchange.token !== TOKEN.ERC721 && exchange.token !== TOKEN.DIP721 && exchange.token !== TOKEN.ERC1155 && exchange.token !== TOKEN.DIP1155 ? (
                   <Text size="small" style={{ textAlign: 'right' }}>
                     <b>*Max Available</b> ={' '}
                     {formatWithSixDecimals(this.tokenInfo.maxAmount)}{' '}
                     {this.tokenInfo.label}
                   </Text>
                 ) : null}
-                {(exchange.token === TOKEN.HRC1155 || exchange.token === TOKEN.ERC1155) ? (
+                {(exchange.token === TOKEN.DIP1155 || exchange.token === TOKEN.ERC1155) ? (
                   <Text size="small" style={{ textAlign: 'right' }}>
                     <b>*Max Available</b> ={' '}
                     {this.tokenInfo.maxAmount || '0'}{' '}
@@ -793,7 +722,7 @@ export class Exchange extends React.Component<
                 ) : null}
               </Box>
 
-              {exchange.mode === EXCHANGE_MODE.ONE_TO_ETH ? (
+              {exchange.mode === EXCHANGE_MODE.ICP_TO_ETH ? (
                 <Box direction="column" fill={true}>
                   <Box
                     direction="column"
@@ -866,7 +795,7 @@ export class Exchange extends React.Component<
                         fontWeight: 'bold',
                       }}
                     >
-                      ONE Address
+                      ICP Address
                     </Text>
                     <Text color="#9698a7" size="small">
                       only use your wallet address, never use contract address
@@ -942,7 +871,7 @@ export class Exchange extends React.Component<
 
         {exchange.step.id === EXCHANGE_STEPS.CONFIRMATION ? (
           <>
-            {exchange.mode === EXCHANGE_MODE.ETH_TO_ONE ? (
+            {exchange.mode === EXCHANGE_MODE.ETH_TO_ICP ? (
               <Box
                 direction="row"
                 justify="end"
@@ -961,7 +890,7 @@ export class Exchange extends React.Component<
               justify="end"
               margin={{
                 top:
-                  exchange.mode === EXCHANGE_MODE.ETH_TO_ONE ? 'medium' : '0px',
+                  exchange.mode === EXCHANGE_MODE.ETH_TO_ICP ? 'medium' : '0px',
               }}
               fill={true}
             >

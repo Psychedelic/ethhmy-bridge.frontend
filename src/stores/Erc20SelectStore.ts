@@ -35,7 +35,7 @@ export class Erc20SelectStore extends StoreConstructor {
     });
 
     autorun(() => {
-      if (stores.exchange.token === TOKEN.HRC20) {
+      if (stores.exchange.token === TOKEN.DIP20) {
         if (stores.user.hrc20Address) {
           this.tokenAddress = stores.user.hrc20Address;
         }
@@ -81,7 +81,7 @@ export class Erc20SelectStore extends StoreConstructor {
           await this.stores.userMetamask.setERC721Token(value);
           break;
 
-        case TOKEN.HRC721:
+        case TOKEN.DIP721:
           await this.stores.user.setHRC721Mapping(value);
           break;
 
@@ -89,7 +89,7 @@ export class Erc20SelectStore extends StoreConstructor {
           await this.stores.userMetamask.setERC1155Token(value);
           break;
 
-        case TOKEN.HRC1155:
+        case TOKEN.DIP1155:
           await this.stores.user.setHRC1155Mapping(value);
           break;
 
@@ -97,7 +97,7 @@ export class Erc20SelectStore extends StoreConstructor {
           await this.stores.userMetamask.setToken(value, ignoreValidations);
           break;
 
-        case TOKEN.HRC20:
+        case TOKEN.DIP20:
           await this.stores.user.setHRC20Mapping(value, ignoreValidations);
           break;
       }
@@ -122,7 +122,7 @@ export class Erc20SelectStore extends StoreConstructor {
     //   return tokensMainnet;
     // }
 
-    if (this.stores.exchange.token === TOKEN.HRC20) {
+    if (this.stores.exchange.token === TOKEN.DIP20) {
       return this.stores.tokens.allData
         .filter(t => !['ONE'].includes(t.symbol))
         .filter(t => t.network === this.stores.exchange.network)

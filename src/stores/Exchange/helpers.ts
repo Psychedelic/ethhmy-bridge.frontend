@@ -12,20 +12,6 @@ export const getContractMethods = (
   const exNetwork = getExNetworkMethods();
 
   switch (token) {
-    case TOKEN.BUSD:
-      ethMethods = exNetwork.ethMethodsBUSD;
-      hmyMethods = isMetamask
-        ? contract.hmyMethodsBUSD.hmyMethodsWeb3
-        : contract.hmyMethodsBUSD.hmyMethods;
-      break;
-
-    case TOKEN.LINK:
-      ethMethods = exNetwork.ethMethodsLINK;
-      hmyMethods = isMetamask
-        ? contract.hmyMethodsLINK.hmyMethodsWeb3
-        : contract.hmyMethodsLINK.hmyMethods;
-      break;
-
     case TOKEN.ERC20:
       ethMethods = exNetwork.ethMethodsERC20;
 
@@ -40,13 +26,13 @@ export const getContractMethods = (
       }
       break;
 
-    case TOKEN.HRC721:
+    case TOKEN.DIP721:
       ethMethods = exNetwork.ethMethodsHRC721;
       hmyMethods = isMetamask
         ? contract.hmyMethodsHRC721.hmyMethodsWeb3
         : contract.hmyMethodsHRC721.hmyMethods;
       break;
-    case TOKEN.HRC1155:
+    case TOKEN.DIP1155:
       ethMethods = exNetwork.ethMethodsHRC1155;
       hmyMethods = isMetamask
         ? contract.hmyMethodsHRC1155.hmyMethodsWeb3
@@ -65,7 +51,7 @@ export const getContractMethods = (
         : contract.hmyMethodsERC721.hmyMethods;
       break;
 
-    case TOKEN.HRC20:
+    case TOKEN.DIP20:
       ethMethods = exNetwork.ethMethodsHRC20;
       if (network === NETWORK_TYPE.ETHEREUM) {
         hmyMethods = isMetamask
@@ -78,14 +64,7 @@ export const getContractMethods = (
       }
       break;
 
-    case TOKEN.ETH:
-      ethMethods = exNetwork.ethMethodsBUSD;
-      hmyMethods = isMetamask
-        ? contract.hmyMethodsERC20.hmyMethodsWeb3
-        : contract.hmyMethodsERC20.hmyMethods;
-      break;
-
-    case TOKEN.ONE:
+    case TOKEN.ICP:
       ethMethods = exNetwork.ethMethodsHRC20;
       hmyMethods = isMetamask
         ? contract.hmyMethodsHRC20.hmyMethodsWeb3

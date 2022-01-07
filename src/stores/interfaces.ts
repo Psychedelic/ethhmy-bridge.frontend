@@ -1,24 +1,21 @@
 export enum NETWORK_TYPE {
   ETHEREUM = 'ETHEREUM',
-  BINANCE = 'BINANCE',
 }
 
 export enum EXCHANGE_MODE {
-  ETH_TO_ONE = 'eth_to_one',
-  ONE_TO_ETH = 'one_to_eth',
+  ETH_TO_ICP = 'eth_to_icp',
+  ICP_TO_ETH = 'icp_to_eth',
 }
 
 export enum TOKEN {
-  BUSD = 'busd',
-  LINK = 'link',
   ERC20 = 'erc20',
-  HRC20 = 'hrc20',
+  DIP20 = 'dip20',
   ETH = 'eth',
-  ONE = 'one',
+  ICP = 'icp',
   ERC721 = 'erc721',
-  HRC721 = 'hrc721',
+  DIP721 = 'hrc721',
   ERC1155 = 'erc1155',
-  HRC1155 = 'hrc1155',
+  DIP1155 = 'hrc1155',
 }
 
 export type TConfig = {
@@ -26,10 +23,6 @@ export type TConfig = {
   explorerURL: string;
   tokens: TOKEN[];
   contracts: {
-    busd: string;
-    link: string;
-    busdManager: string;
-    linkManager: string;
     erc20Manager: string;
     erc721Manager: string;
     multisigWallet: string;
@@ -58,7 +51,7 @@ export enum ACTION_TYPE {
   'depositOne' = 'depositOne',
   'withdrawOne' = 'withdrawOne',
 
-  // ETH_TO_ONE
+  // ETH_TO_ICP
   'getHRC20Address' = 'getHRC20Address',
   'approveEthManger' = 'approveEthManger',
   'lockToken' = 'lockToken',
@@ -66,7 +59,7 @@ export enum ACTION_TYPE {
   'mintToken' = 'mintToken',
   'mintTokenRollback' = 'mintTokenRollback',
 
-  // ONE_TO_ETH
+  // ICP_TO_ETH
   'approveHmyManger' = 'approveHmyManger',
   'burnToken' = 'burnToken',
   'waitingBlockNumberHarmony' = 'waitingBlockNumberHarmony',

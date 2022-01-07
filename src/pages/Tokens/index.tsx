@@ -51,7 +51,7 @@ const EthAddress = observer(
 
 const oneAddress = value => (
   <Box direction="row" justify="start" align="center" style={{ marginTop: 4 }}>
-    <img className={styles.imgToken} style={{ height: 18 }} src="/one.svg" />
+    <img className={styles.imgToken} style={{ height: 18 }} src="/dfinity.svg" />
     <a
       className={styles.addressLink}
       href={`${process.env.HMY_EXPLORER_URL}/address/${value}?activeTab=3`}
@@ -209,7 +209,7 @@ export const Tokens = observer((props: any) => {
   const lastUpdateAgo = Math.ceil((Date.now() - tokens.lastUpdateTime) / 1000);
 
   const filteredData = tokens.allData.filter(token => {
-    if ((token.type === "erc20" || token.type === "hrc20") && !Number(token.totalSupply)) {
+    if ((token.type === "erc20" || token.type === "dip20") && !Number(token.totalSupply)) {
       return false;
     }
 
@@ -291,11 +291,6 @@ export const Tokens = observer((props: any) => {
                 onClick={() => setNetwork('ALL')}
               />
               <NetworkButton
-                type={NETWORK_TYPE.BINANCE}
-                selectedType={network}
-                onClick={() => setNetwork(NETWORK_TYPE.BINANCE)}
-              />
-              <NetworkButton
                 type={NETWORK_TYPE.ETHEREUM}
                 selectedType={network}
                 onClick={() => setNetwork(NETWORK_TYPE.ETHEREUM)}
@@ -308,11 +303,11 @@ export const Tokens = observer((props: any) => {
                   options={[
                     { text: 'ALL', value: 'ALL' },
                     { text: 'ERC20', value: TOKEN.ERC20 },
-                    { text: 'HRC20', value: TOKEN.HRC20 },
+                    { text: 'DIP20', value: TOKEN.DIP20 },
                     { text: 'ERC721', value: TOKEN.ERC721 },
                     { text: 'ERC1155', value: TOKEN.ERC1155 },
-                    { text: 'HRC721', value: TOKEN.HRC721 },
-                    { text: 'HRC1155', value: TOKEN.HRC1155 },
+                    { text: 'DIP721', value: TOKEN.DIP721 },
+                    { text: 'DIP1155', value: TOKEN.DIP1155 },
                   ]}
                   onChange={setToken}
                 />
@@ -330,11 +325,6 @@ export const Tokens = observer((props: any) => {
               type={'ALL'}
               selectedType={network}
               onClick={() => setNetwork('ALL')}
-            />
-            <NetworkButton
-              type={NETWORK_TYPE.BINANCE}
-              selectedType={network}
-              onClick={() => setNetwork(NETWORK_TYPE.BINANCE)}
             />
             <NetworkButton
               type={NETWORK_TYPE.ETHEREUM}

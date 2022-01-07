@@ -47,7 +47,7 @@ const EthAddress = observer<any>(
 
 const oneAddress = value => (
   <Box direction="row" justify="start" align="center" style={{ marginTop: 4 }}>
-    <img className={styles.imgToken} style={{ height: 18 }} src="/one.svg" />
+    <img className={styles.imgToken} style={{ height: 18 }} src="/dfinity.svg" />
     <a
       className={styles.addressLink}
       href={`${process.env.HMY_EXPLORER_URL}/address/${value}`}
@@ -77,7 +77,7 @@ export const getColumns = (
       dataIndex: 'ethAddress',
       width: 200,
       render: (value, data) =>
-        data.type === EXCHANGE_MODE.ETH_TO_ONE ? (
+        data.type === EXCHANGE_MODE.ETH_TO_ICP ? (
           <EthAddress address={value} operation={data} />
         ) : (
           oneAddress(data.oneAddress)
@@ -90,7 +90,7 @@ export const getColumns = (
       dataIndex: 'oneAddress',
       width: 200,
       render: (value, data) =>
-        data.type === EXCHANGE_MODE.ETH_TO_ONE ? (
+        data.type === EXCHANGE_MODE.ETH_TO_ICP ? (
           oneAddress(data.oneAddress)
         ) : (
           <EthAddress address={value} operation={data} />
@@ -156,7 +156,7 @@ export const getColumns = (
       dataIndex: 'amount',
       width: 120,
       render: (value, data) =>
-        (data.token === TOKEN.ERC721 || data.token === TOKEN.HRC721)
+        (data.token === TOKEN.ERC721 || data.token === TOKEN.DIP721)
           ? value.length
           : formatWithSixDecimals(value),
     },
@@ -175,7 +175,7 @@ export const getColumns = (
       width: 180,
       render: (value, data) => {
         const fee = getOperationFee(data);
-        const isETH = data.type === EXCHANGE_MODE.ETH_TO_ONE;
+        const isETH = data.type === EXCHANGE_MODE.ETH_TO_ICP;
 
         return <Price value={fee} isEth={isETH} network={data.network} />;
       },

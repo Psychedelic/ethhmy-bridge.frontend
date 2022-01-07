@@ -87,7 +87,7 @@ const StepRow = observer(
                 <img
                   className={styles.imgToken}
                   style={{ height: 18 }}
-                  src="/one.svg"
+                  src="/dfinity.svg"
                 />
                 <Text>HRC20 address:</Text>
               </Box>

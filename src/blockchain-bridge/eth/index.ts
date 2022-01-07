@@ -14,8 +14,6 @@ const web3URL = window.ethereum ? window.ethereum : process.env.ETH_NODE_URL;
 
 export interface INetworkMethods {
   web3: Web3;
-  ethMethodsBUSD: EthMethods;
-  ethMethodsLINK: EthMethods;
   ethMethodsERC20: EthMethodsERC20;
   ethMethodsHRC20: EthMethodsHRC20;
   ethMethodsERС721: EthMethodsERC20;
@@ -28,44 +26,6 @@ export interface INetworkMethods {
 
 const init = (config: TConfig): INetworkMethods => {
   const web3 = new Web3(web3URL);
-
-  const ethBUSDJson = require('../out/MyERC20');
-  const ethBUSDContract = new web3.eth.Contract(
-    ethBUSDJson.abi,
-    config.contracts.busd,
-  );
-
-  const ethBUSDManagerJson = require('../out/LINKEthManager');
-  const ethBUSDManagerContract = new web3.eth.Contract(
-    ethBUSDManagerJson.abi,
-    config.contracts.busdManager,
-  );
-
-  const ethLINKJson = require('../out/MyERC20');
-  const ethLINKContract = new web3.eth.Contract(
-    ethLINKJson.abi,
-    config.contracts.link,
-  );
-
-  const ethLINKManagerJson = require('../out/LINKEthManager');
-  const ethLINKManagerContract = new web3.eth.Contract(
-    ethLINKManagerJson.abi,
-    config.contracts.linkManager,
-  );
-
-  const ethMethodsBUSD = new EthMethods({
-    web3: web3,
-    ethTokenContract: ethBUSDContract,
-    ethManagerContract: ethBUSDManagerContract,
-    ethManagerAddress: config.contracts.busdManager,
-  });
-
-  const ethMethodsLINK = new EthMethods({
-    web3: web3,
-    ethTokenContract: ethLINKContract,
-    ethManagerContract: ethLINKManagerContract,
-    ethManagerAddress: config.contracts.linkManager,
-  });
 
   const ethManagerJson = require('../out/EthManagerERC20');
   const ethManagerContract = new web3.eth.Contract(
@@ -148,8 +108,6 @@ const init = (config: TConfig): INetworkMethods => {
 
   return {
     web3,
-    ethMethodsBUSD,
-    ethMethodsLINK,
     ethMethodsERC20,
     ethMethodsHRC20,
     ethMethodsERС721,
@@ -180,10 +138,5 @@ export const initNetworks = (fullCinfig: TFullConfig) => {
 };
 
 export const getExNetworkMethods = (): INetworkMethods => {
-  switch (stores.exchange.network) {
-    case NETWORK_TYPE.ETHEREUM:
-      return ethNetwork;
-    case NETWORK_TYPE.BINANCE:
-      return binanceNetwork;
-  }
+  return ethNetwork;
 };

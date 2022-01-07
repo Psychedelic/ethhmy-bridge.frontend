@@ -68,12 +68,12 @@ export class UserStoreMetamask extends StoreConstructor {
           case TOKEN.ERC20:
             this.setToken(sessionObj.erc20Address);
             break;
-          case TOKEN.ONE:
+          case TOKEN.ICP:
             setTimeout(() => {
               this.stores.user.setHRC20Mapping(sessionObj.hrc20Address, true);
             }, 1000);
             break;
-          case TOKEN.HRC20:
+          case TOKEN.DIP20:
             setTimeout(() => {
               this.stores.user.setHRC20Mapping(sessionObj.hrc20Address);
             }, 1000);
@@ -97,20 +97,10 @@ export class UserStoreMetamask extends StoreConstructor {
 
     switch (process.env.NETWORK) {
       case 'testnet':
-        switch (this.stores.exchange.network) {
-          case NETWORK_TYPE.ETHEREUM:
-            return Number(this.metamaskChainId) === 42;
-          case NETWORK_TYPE.BINANCE:
-            return Number(this.metamaskChainId) === 97;
-        }
+        return Number(this.metamaskChainId) === 42;
 
       case 'mainnet':
-        switch (this.stores.exchange.network) {
-          case NETWORK_TYPE.ETHEREUM:
-            return Number(this.metamaskChainId) === 1;
-          case NETWORK_TYPE.BINANCE:
-            return Number(this.metamaskChainId) === 56;
-        }
+        return Number(this.metamaskChainId) === 1;
     }
 
     return false;
@@ -256,16 +246,6 @@ export class UserStoreMetamask extends StoreConstructor {
           );
         }
 
-        let res = 0;
-
-        if (this.stores.exchange.network === NETWORK_TYPE.ETHEREUM) {
-          res = await exNetwork.ethMethodsLINK.checkEthBalance(this.ethAddress);
-          this.ethLINKBalance = divDecimals(res, 18);
-
-          res = await exNetwork.ethMethodsBUSD.checkEthBalance(this.ethAddress);
-          this.ethBUSDBalance = divDecimals(res, 18);
-        }
-
         this.ethBalance = await exNetwork.getEthBalance(this.ethAddress);
       } catch (e) {
         console.error(e);
@@ -290,7 +270,7 @@ export class UserStoreMetamask extends StoreConstructor {
     }
 
     if (
-      this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ONE &&
+      this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ICP &&
       (!this.isNetworkActual || !this.isAuthorized)
     ) {
       throw new Error(
@@ -301,7 +281,7 @@ export class UserStoreMetamask extends StoreConstructor {
     }
 
     if (
-      this.stores.exchange.mode === EXCHANGE_MODE.ONE_TO_ETH &&
+      this.stores.exchange.mode === EXCHANGE_MODE.ICP_TO_ETH &&
       ((this.stores.user.isMetamask && !this.stores.user.isNetworkActual) ||
         !this.stores.user.isAuthorized)
     ) {
@@ -313,7 +293,7 @@ export class UserStoreMetamask extends StoreConstructor {
     if (!ignoreValidations) {
       if (
         this.stores.tokens.allData
-          .filter(t => t.token === TOKEN.HRC20)
+          .filter(t => t.token === TOKEN.DIP20)
           .find(
             t =>
               isAddressEqual(t.erc20Address, erc20Address) ||
@@ -349,7 +329,7 @@ export class UserStoreMetamask extends StoreConstructor {
       address = await hmyMethodsBEP20.hmyMethods.getMappingFor(erc20Address);
     }
 
-    if (this.stores.exchange.mode === EXCHANGE_MODE.ONE_TO_ETH && !address) {
+    if (this.stores.exchange.mode === EXCHANGE_MODE.ICP_TO_ETH && !address) {
       // throw new Error('Address not mapping');
       throw new Error(
         `Wrong token address. Use only a valid ${
@@ -363,7 +343,7 @@ export class UserStoreMetamask extends StoreConstructor {
         erc20Address,
       );
     } catch (e) {
-      if (this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ONE) {
+      if (this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ICP) {
         throw new Error(
           `Wrong token address. Use only a valid ${
             NETWORK_ERC20_TOKEN[this.stores.exchange.network]
@@ -382,7 +362,7 @@ export class UserStoreMetamask extends StoreConstructor {
             erc20Address,
           };
         } catch (e) {
-          if (this.stores.exchange.mode === EXCHANGE_MODE.ONE_TO_ETH) {
+          if (this.stores.exchange.mode === EXCHANGE_MODE.ICP_TO_ETH) {
             throw new Error(
               `Wrong token address. Use only a valid ${
                 NETWORK_ERC20_TOKEN[this.stores.exchange.network]
@@ -418,7 +398,7 @@ export class UserStoreMetamask extends StoreConstructor {
             erc20Address,
           };
         } catch (e) {
-          if (this.stores.exchange.mode === EXCHANGE_MODE.ONE_TO_ETH) {
+          if (this.stores.exchange.mode === EXCHANGE_MODE.ICP_TO_ETH) {
             throw new Error(
               `Wrong token address. Use only a valid ${
                 NETWORK_ERC20_TOKEN[this.stores.exchange.network]
@@ -449,7 +429,7 @@ export class UserStoreMetamask extends StoreConstructor {
     }
 
     if (
-      this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ONE &&
+      this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ICP &&
       (!this.isNetworkActual || !this.isAuthorized)
     ) {
       throw new Error(
@@ -460,7 +440,7 @@ export class UserStoreMetamask extends StoreConstructor {
     }
 
     if (
-      this.stores.exchange.mode === EXCHANGE_MODE.ONE_TO_ETH &&
+      this.stores.exchange.mode === EXCHANGE_MODE.ICP_TO_ETH &&
       ((this.stores.user.isMetamask && !this.stores.user.isNetworkActual) ||
         !this.stores.user.isAuthorized)
     ) {
@@ -471,7 +451,7 @@ export class UserStoreMetamask extends StoreConstructor {
 
     if (
       this.stores.tokens.allData
-        .filter(t => t.token === TOKEN.HRC20)
+        .filter(t => t.token === TOKEN.DIP20)
         .find(t => t.erc20Address === erc20Address)
     ) {
       throw new Error('This address already using for HRC20 token wrapper');
@@ -526,7 +506,7 @@ export class UserStoreMetamask extends StoreConstructor {
     }
 
     if (
-      this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ONE &&
+      this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ICP &&
       (!this.isNetworkActual || !this.isAuthorized)
     ) {
       throw new Error(
@@ -537,7 +517,7 @@ export class UserStoreMetamask extends StoreConstructor {
     }
 
     if (
-      this.stores.exchange.mode === EXCHANGE_MODE.ONE_TO_ETH &&
+      this.stores.exchange.mode === EXCHANGE_MODE.ICP_TO_ETH &&
       ((this.stores.user.isMetamask && !this.stores.user.isNetworkActual) ||
         !this.stores.user.isAuthorized)
     ) {
@@ -548,10 +528,10 @@ export class UserStoreMetamask extends StoreConstructor {
 
     if (
       this.stores.tokens.allData
-        .filter(t => t.token === TOKEN.HRC20)
+        .filter(t => t.token === TOKEN.DIP20)
         .find(t => t.erc20Address === erc1155Address)
     ) {
-      throw new Error('This address already using for HRC20 token wrapper');
+      throw new Error('This address already using for DIP20 token wrapper');
     }
 
     if (

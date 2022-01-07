@@ -15,7 +15,7 @@ export const OperationType = (props: { type: EXCHANGE_MODE }) => {
   return (
     <Box
       direction={
-        props.type === EXCHANGE_MODE.ETH_TO_ONE ? 'row' : 'row-reverse'
+        props.type === EXCHANGE_MODE.ETH_TO_ICP ? 'row' : 'row-reverse'
       }
       align="center"
       className={cn(styles.operationType)}
@@ -36,9 +36,9 @@ export const OperationType = (props: { type: EXCHANGE_MODE }) => {
         <img
           className={styles.imgToken}
           style={{ height: 18 }}
-          src="/one.svg"
+          src="/dfinity.svg"
         />
-        <Text size="medium">ONE</Text>
+        <Text size="medium">ICP</Text>
       </Box>
     </Box>
   );
@@ -92,7 +92,7 @@ export const ERC20Token = observer((props: IERC20TokenProps) => {
     ReactTooltip.rebuild();
   });
 
-  if ([TOKEN.ERC20, TOKEN.ERC721, TOKEN.HRC721, TOKEN.HRC20].includes(value)) {
+  if ([TOKEN.ERC20, TOKEN.ERC721, TOKEN.DIP721, TOKEN.DIP20].includes(value)) {
     const token =
       tokens.fetchStatus !== 'init' &&
       tokens.allData.find(
@@ -111,10 +111,6 @@ export const ERC20Token = observer((props: IERC20TokenProps) => {
         <Box>{sliceByLength(token.symbol, 9)}</Box>
       );
     }
-  }
-
-  if (network === NETWORK_TYPE.BINANCE && value === TOKEN.ERC20) {
-    return <Box>BEP20</Box>;
   }
 
   if (value === TOKEN.ETH) {

@@ -19,7 +19,7 @@ import {
 export const isStuckOperation = (o: IOperation) => {
   if (o.status === STATUS.IN_PROGRESS || o.status === STATUS.WAITING) {
     const actionType =
-      o.type === EXCHANGE_MODE.ETH_TO_ONE
+      o.type === EXCHANGE_MODE.ETH_TO_ICP
         ? ACTION_TYPE.mintToken
         : ACTION_TYPE.unlockToken;
 

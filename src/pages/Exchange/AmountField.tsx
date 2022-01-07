@@ -16,7 +16,7 @@ export const TokensField = observer<{ label: string; maxTokens: string }>(
       <>
         <Text bold={true} size="large">
             {
-              exchange.token === TOKEN.HRC721 ? (
+              exchange.token === TOKEN.DIP721 ? (
                 <><SliceTooltip value={params.label} maxLength={18} /> Token ID</>
               ) : (
                 <><SliceTooltip value={params.label} maxLength={18} /> Token IDs</>
@@ -70,7 +70,7 @@ export const TokensField = observer<{ label: string; maxTokens: string }>(
               ))
             : null}
             {
-              exchange.token !== TOKEN.HRC721 && (
+              exchange.token !== TOKEN.DIP721 && (
                 <Button
                   bgColor="#00ADE8"
                   style={{ width: 180, top: 10 }}

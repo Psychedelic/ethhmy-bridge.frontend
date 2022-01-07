@@ -31,7 +31,7 @@ export const sendHrc20Token = async (params: {
 
   const ethMethods = getExNetworkMethods().ethMethodsHRC20;
 
-  if (mode === EXCHANGE_MODE.ETH_TO_ONE) {
+  if (mode === EXCHANGE_MODE.ETH_TO_ICP) {
     let approveEthManger = getActionByType(ACTION_TYPE.approveHRC20EthManger);
 
     if (approveEthManger && approveEthManger.status === STATUS.WAITING) {
@@ -83,7 +83,7 @@ export const sendHrc20Token = async (params: {
       await stores.userMetamask.setToken(transaction.erc20Address);
     }
 
-    if (mode === EXCHANGE_MODE.ONE_TO_ETH) {
+    if (mode === EXCHANGE_MODE.ICP_TO_ETH) {
       const hrc20Address = stores.user.hrc20Address;
 
       let approveHmyManger = getActionByType(ACTION_TYPE.approveHRC20HmyManger);

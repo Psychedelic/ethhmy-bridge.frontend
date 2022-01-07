@@ -15,15 +15,10 @@ const labels: Record<NETWORK_TYPE, Record<string, string>> = {
   [NETWORK_TYPE.ETHEREUM]: {
     [TOKEN.ERC20]: 'ERC20 token address',
     [TOKEN.ERC721]: 'ERC721 token address',
-    [TOKEN.HRC721]: 'HRC721 token address',
-    [TOKEN.ERC1155]: 'ERC1155 token address',
-    [TOKEN.HRC1155]: 'HRC1155 token address',
-    [TOKEN.HRC20]: 'HRC20 token address',
-  },
-  [NETWORK_TYPE.BINANCE]: {
-    [TOKEN.ERC20]: 'BEP20 token address',
-    [TOKEN.ERC721]: 'ERC721 token address',
-    [TOKEN.HRC20]: 'HRC20 token address',
+    [TOKEN.DIP721]: 'DIP721 token address',
+    [TOKEN.ERC1155]: 'DIP1155 token address',
+    [TOKEN.DIP1155]: 'DIP1155 token address',
+    [TOKEN.DIP20]: 'DIP20 token address',
   },
 };
 
@@ -31,15 +26,10 @@ const placeholder: Record<NETWORK_TYPE, Record<string, string>> = {
   [NETWORK_TYPE.ETHEREUM]: {
     [TOKEN.ERC20]: 'Select your ERC20 token',
     [TOKEN.ERC721]: 'Select your ERC721 token',
-    [TOKEN.HRC721]: 'Select your HRC721 token',
+    [TOKEN.DIP721]: 'Select your DIP721 token',
     [TOKEN.ERC1155]: 'Select your ERC1155 token',
-    [TOKEN.HRC1155]: 'Select your HRC1155 token',
-    [TOKEN.HRC20]: 'Select your HRC20 token',
-  },
-  [NETWORK_TYPE.BINANCE]: {
-    [TOKEN.ERC20]: 'Select your BEP20 token',
-    [TOKEN.ERC721]: 'Select your ERC721 token',
-    [TOKEN.HRC20]: 'Select your HRC20 token',
+    [TOKEN.DIP1155]: 'Select your DIP1155 token',
+    [TOKEN.DIP20]: 'Select your DIP20 token',
   },
 };
 
@@ -47,15 +37,10 @@ const inputPlaceholder: Record<NETWORK_TYPE, Record<string, string>> = {
   [NETWORK_TYPE.ETHEREUM]: {
     [TOKEN.ERC20]: 'Input ERC20 token address',
     [TOKEN.ERC721]: 'Input ERC721 token address',
-    [TOKEN.HRC721]: 'Input HRC721 token address',
+    [TOKEN.DIP721]: 'Input DIP721 token address',
     [TOKEN.ERC1155]: 'Input ERC1155 token address',
-    [TOKEN.HRC1155]: 'Input HRC1155 token address',
-    [TOKEN.HRC20]: 'Input HRC20 token address',
-  },
-  [NETWORK_TYPE.BINANCE]: {
-    [TOKEN.ERC20]: 'Input BEP20 token address',
-    [TOKEN.ERC721]: 'Input ERC721 token address',
-    [TOKEN.HRC20]: 'Input HRC20 token address',
+    [TOKEN.DIP1155]: 'Input DIP1155 token address',
+    [TOKEN.DIP20]: 'Input DIP20 token address',
   },
 };
 
@@ -126,7 +111,7 @@ export const ERC20Select = observer<{ type: TOKEN; options?: boolean }>(
                 <a
                   className={styles.addressLink}
                   href={
-                    exchange.token === TOKEN.HRC20
+                    exchange.token === TOKEN.DIP20
                       ? `${process.env.HMY_EXPLORER_URL}/address/${erc20Select.tokenAddress}`
                       : `${exchange.config.explorerURL}/token/${erc20Select.tokenAddress}`
                   }
@@ -151,7 +136,7 @@ export const ERC20Select = observer<{ type: TOKEN; options?: boolean }>(
               />
             </Box>
             {
-              (type === TOKEN.ERC1155 || type === TOKEN.HRC1155) && (
+              (type === TOKEN.ERC1155 || type === TOKEN.DIP1155) && (
                 <>
                   <Text bold={true} size="large">
                     {type.toUpperCase()} token ID

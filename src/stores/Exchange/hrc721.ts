@@ -26,7 +26,7 @@ export const sendHrc721Token = async (params: {
 
   const ethMethods = getExNetworkMethods().ethMethodsHRC721;
 
-  if (mode === EXCHANGE_MODE.ETH_TO_ONE) {
+  if (mode === EXCHANGE_MODE.ETH_TO_ICP) {
     let approveEthManger = getActionByType(ACTION_TYPE.approveHRC721EthManger);
     const hrc721Address = transaction.hrc721Address;
     const mapperAddress = await ethMethods.getMappingFor(hrc721Address);
@@ -72,7 +72,7 @@ export const sendHrc721Token = async (params: {
       getHRC721Action = getActionByType(ACTION_TYPE.getHRC721Address);
     }
 
-    if (mode === EXCHANGE_MODE.ONE_TO_ETH) {
+    if (mode === EXCHANGE_MODE.ICP_TO_ETH) {
       const hrc721Address = transaction.hrc721Address;
 
       let approveHmyManger = getActionByType(ACTION_TYPE.approveHRC721HmyManger);
