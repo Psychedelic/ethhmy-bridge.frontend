@@ -8,6 +8,7 @@ import { AdminOperations } from './AdminOperations';
 import { Tokens } from './Tokens';
 import { createStoresContext } from './create-context';
 import { Erc20SelectStore } from './Erc20SelectStore';
+import { plugSlice } from './Plug/plug-slice';
 
 export interface IStores {
   routing?: RouterStore;
@@ -19,6 +20,7 @@ export interface IStores {
   adminOperations?: AdminOperations;
   tokens?: Tokens;
   erc20Select?: Erc20SelectStore;
+  plug?: any;
 }
 
 const stores: IStores = {};

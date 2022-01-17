@@ -19,8 +19,6 @@ const MainLogo = styled.img`
   margin-bottom: 4px;
 `;
 
-const getTokenServiceEnable = process.env.GET_TOKENS_SERVICE === 'true';
-
 export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
   observer(({ theme, ...props }: IStyledChildrenProps<BoxProps>) => {
     const history = useHistory();
@@ -101,20 +99,6 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
             gap={isMobile ? '10px' : '15px'}
             margin={{ bottom: isMobile ? '10px' : '0px' }}
           >
-            {getTokenServiceEnable ? (
-              <Box
-                className={cn(
-                  styles.itemToken,
-                  isGetTokens ? styles.selected : '',
-                )}
-                onClick={() => {
-                  routing.push(`/get-tokens`);
-                }}
-              >
-                <Text>Get tokens</Text>
-              </Box>
-            ) : null}
-
             <Box
               className={cn(
                 styles.itemToken,

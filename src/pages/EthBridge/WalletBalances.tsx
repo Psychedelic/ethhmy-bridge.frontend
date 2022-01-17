@@ -225,7 +225,7 @@ export const WalletBalances = observer(() => {
             <Box direction="column" align="center">
               <Box direction="row" align="center">
                 <img className={styles.imgToken} src="/dfinity.svg" />
-                <Title margin={{ right: 'xsmall' }}>Harmony</Title>
+                <Title margin={{ right: 'xsmall' }}>Dfinity</Title>
               </Box>
               <Text style={{ marginTop: 0 }}>
                 network:{' '}
@@ -477,19 +477,6 @@ export const WalletBalances = observer(() => {
                   Plug Wallet
                 </WalletButton>
               ) : null}
-
-              <WalletButton
-                onClick={() => {
-                  user.signInMetamask();
-                }}
-                error={user.error}
-              >
-                <img
-                  src="/metamask.svg"
-                  style={{ marginRight: 15, height: 22 }}
-                />
-                Metamask
-              </WalletButton>
             </Box>
           )}
         </Box>
